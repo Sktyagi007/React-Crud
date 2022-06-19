@@ -5,7 +5,7 @@ class Todo extends Component{
     constructor(){
             super();
             this.state = {
-                tasks:["welcome","to","the","future"],
+                tasks:[{task:"hello",id:"1"}],
                 currTask:""
             }
     }
@@ -17,8 +17,16 @@ class Todo extends Component{
     }
     handleAddTask = ()=>{
         this.setState({
-            tasks:[...this.state.tasks,this.state.currTask],
+            tasks:[...this.state.tasks,{task:this.state.currTask,id:this.state.tasks.length+1}],
             currTask:""
+        })
+    }
+    handleDelete =(id)=>{
+        let narr = this.state.tasks.filter((taskObj)=>{
+            return taskObj.id!=id;
+        })
+        this.setState({
+            tasks:[...narr]
         })
     }
     render(){
@@ -27,10 +35,10 @@ class Todo extends Component{
                 <input type="text" value={this.state.currTask} onChange = {this.handleChange}/>
                 <button onClick={this.handleAddTask} >Add Task</button>
                 <ul>
-                    {this.state.tasks.map((ele)=>(
-                        <li>
-                            <p>{ele}</p>
-                            <button>Delete</button>
+                    {this.state.tasks.map((taskObj)=>(
+                        <li key = {taskObj.id}>
+                            <p>{taskObj.task}</p>
+                            <button onClick={()=>this.handleDelete(taskObj.id)} >Delete</button>
                         </li>
                     ))}
                 </ul>
